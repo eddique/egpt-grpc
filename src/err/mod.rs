@@ -24,9 +24,6 @@ pub enum Error {
 
     #[error("error: {0}")]
     SocketParse(#[from] std::net::AddrParseError),
-
-    #[error("Request error: {0}")]
-    Request(#[from] reqwest::Error),
     
     #[error("SQL error: {0}")]
     Sqlx(#[from] sqlx::Error),
