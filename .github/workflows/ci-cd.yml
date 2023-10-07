@@ -17,7 +17,8 @@ jobs:
         with:
           toolchain: stable
           components: clippy
-          
+      - name: Install protobuf compiler
+        run: apt-get update && install -y protobuf-compiler
       - name: Build Lint
         run: cargo clippy
 
