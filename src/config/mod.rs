@@ -32,5 +32,6 @@ fn config_pg() -> Result<String> {
 	let port = env::var("PG_PORT").unwrap_or(format!("5432"));
 	let ns = env::var("PG_NAME")?;
 	let conn_str = format!("postgres://{}:{}@{}:{}/{}", user, pwd, host, port, ns);
+	tracing::info!("conn_str: {conn_str}");
 	Ok(conn_str)
 }

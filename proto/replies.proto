@@ -1,0 +1,24 @@
+syntax = "proto3";
+package replies;
+// import "google/protobuf/timestamp.proto";
+
+service Replies {
+    rpc FindReply(FindReplyRequest) returns (ReplyResponse);
+}
+
+message FindReplyRequest {
+    string message = 1;
+}
+
+message ReplyResponse {
+    string status = 1;
+    ReplyEntity reply = 2;
+
+}
+
+message ReplyEntity {
+    int32 id = 1;
+    string look_for = 2;
+    string reply_with = 3;
+    // google.protobuf.Timestamp expires = 4;
+}

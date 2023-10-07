@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 use crate::{db::Db, err::Result};
+use crate::grpc::pb::UserEntity;
 
 #[derive(Debug, Deserialize, Serialize, FromRow)]
 pub struct User {
@@ -12,6 +13,18 @@ pub struct User {
     pub role: String,
 }
 
+impl Into<UserEntity> for User {
+    fn into(self) -> UserEntity {
+        UserEntity {
+            id: self.id,
+            email: self.email,
+            first_name: self.first_name,
+            last_name: self.last_name,
+            active: self.active,
+            role: self.role,
+        }
+    }
+}
 pub struct UserMAC;
 
 impl UserMAC {

@@ -1,6 +1,7 @@
 pub type Result<T> = std::result::Result<T, Error>;
+pub type GrpcResult<T> = std::result::Result<Response<T>, Status>;
 use thiserror::Error;
-use tonic::Status;
+use tonic::{Status, Response};
 
 #[derive(Debug, Error)]
 pub enum Error {
