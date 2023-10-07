@@ -4,9 +4,9 @@ RUN apt-get update && apt-get install -y protobuf-compiler pkg-config
 
 WORKDIR /usr/src/
 
-RUN cargo new egpt-gprc
+RUN cargo new egpt-grpc
 
-WORKDIR /usr/src/egpt-gprc
+WORKDIR /usr/src/egpt-grpc
 
 COPY Cargo.toml Cargo.lock ./
 
@@ -18,10 +18,10 @@ RUN cargo install --path .
 
 FROM gcr.io/distroless/cc
 
-COPY --from=builder /usr/local/cargo/bin/egpt-gprc .
+COPY --from=builder /usr/local/cargo/bin/egpt-grpc .
 
 EXPOSE 9000
 
 EXPOSE 50051
 
-CMD ["./egpt-gprc"]
+CMD ["./egpt-grpc"]

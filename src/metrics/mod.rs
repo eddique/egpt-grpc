@@ -6,7 +6,7 @@ use metrics_util::MetricKindMask;
 
 pub fn config() {
     let builder = PrometheusBuilder::new();
-    let addr = SocketAddr::from(([0, 0, 0, 0], 2000));
+    let addr = SocketAddr::from(([0, 0, 0, 0], 9000));
     tracing::info!("prometheus listening on {}/metrics", addr);
     builder
         .with_http_listener(addr)
