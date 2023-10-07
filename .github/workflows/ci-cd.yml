@@ -1,0 +1,36 @@
+name: eGPT GPRC Continuous Integration
+
+on:
+  pull_request:
+    branches: ["master"]
+  push:
+    branches: ["master"]
+jobs:
+  build_and_push_to_docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          components: clippy
+          
+      - name: Build Lint
+        run: cargo clippy
+
+      - name: Build
+        run: |
+          cargo build --verbose
+
+      - name: Build Docker image
+        run: |
+          docker build -t eddique/egpt-gprc .
+          docker tag eddique/egpt-gprc eddique/egpt-gprc:latest
+      
+      - name: Push to DockerHub
+        run: |
+          echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          docker push eddique/egpt-gprc:latest

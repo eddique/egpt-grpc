@@ -1,0 +1,27 @@
+syntax = "proto3";
+package users;
+// import "google/protobuf/timestamp.proto";
+
+service User {
+    rpc EmailLookup(UserByEmailRequest) returns (UserResponse);
+}
+
+message UserByEmailRequest {
+    string email = 1;
+}
+
+message UserResponse {
+    string status = 1;
+    UserEntity user = 2;
+}
+
+message UserEntity {
+    int32 id = 1;
+    string first_name = 2;
+    string last_name = 3;
+    string email = 4;
+    string role = 5;
+    bool active = 6;
+    // google.protobuf.Timestamp created_at = 7;
+    // google.protobuf.Timestamp updated_at = 8;
+}
