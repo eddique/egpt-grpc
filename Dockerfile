@@ -19,7 +19,7 @@ RUN cargo install --path .
 FROM gcr.io/distroless/cc
 
 COPY --from=builder /usr/local/cargo/bin/egpt-grpc .
-COPY --from=builder /usr/src/egpt-grpc/sql .
+COPY --from=builder /usr/src/egpt-grpc/sql /sql
 
 EXPOSE 9000
 
