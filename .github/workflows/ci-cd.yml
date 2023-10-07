@@ -1,4 +1,4 @@
-name: eGPT GPRC Continuous Integration
+name: eGPT GRPC Continuous Integration
 
 on:
   pull_request:
@@ -28,10 +28,10 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t eddique/egpt-gprc .
-          docker tag eddique/egpt-gprc eddique/egpt-gprc:latest
+          docker build -t eddique/egpt-grpc .
+          docker tag eddique/egpt-grpc eddique/egpt-grpc:latest
       
       - name: Push to DockerHub
         run: |
           echo ${{ secrets.DOCKER_PASSWORD }} | docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
-          docker push eddique/egpt-gprc:latest
+          docker push eddique/egpt-grpc:latest
