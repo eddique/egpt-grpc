@@ -26,6 +26,7 @@ tonic = "0.10.0"
 metrics-exporter-prometheus = "0.12.1"
 metrics = "0.21.1"
 metrics-util = "0.15.1"
+prost-types = "0.12.1"
 
 [build-dependencies]
 tonic-build = "0.10.0"

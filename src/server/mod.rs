@@ -1,7 +1,3 @@
-mod pb {
-    tonic::include_proto!("users");
-}
-
 use tonic::transport::Server;
 
 use crate::err::Result;
@@ -9,7 +5,7 @@ use crate::db::Store;
 use crate::services;
 
 pub async fn init(store: Store) ->  Result<()> {
-    let addr = "[::1]:50051".parse()?;
+    let addr = "0.0.0.0:50051".parse()?;
     tracing::info!("grpc::server listening on {addr}");
 
     let users_svc = services::users::config(store.clone());

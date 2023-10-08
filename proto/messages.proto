@@ -1,0 +1,20 @@
+syntax = "proto3";
+package messages;
+import "google/protobuf/timestamp.proto";
+
+service Message {
+    rpc GetMessages(Void) returns (GetMessagesResponse);
+}
+message Void {}
+
+message GetMessagesResponse {
+    repeated MessageEntity messages = 1;
+}
+message MessageEntity {
+    int32 id = 1;
+    string channel = 2;
+    string text = 3;
+    google.protobuf.Timestamp post_at = 4;
+    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp updated_at = 6;
+}
