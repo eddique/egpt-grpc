@@ -1,3 +1,4 @@
+use tokio::time::Instant;
 use tonic::{Request, Response};
 use crate::err::GrpcResult;
 use crate::grpc::pb::{FindReplyRequest, ReplyResponse, ReplyEntity};
@@ -22,8 +23,8 @@ impl RepliesService {
 #[tonic::async_trait]
 impl Replies for RepliesService {
     async fn find_reply(&self, req: Request<FindReplyRequest>) -> GrpcResult<ReplyResponse> {
-        metrics::increment_counter!("requests");
-        metrics::increment_counter!("find_reply");
+        metrics::increment_counter!("requests", "service" => "replies_service", "rpc" => "find_reply");
+        let start = Instant::now();
 
         let message = req.into_inner().message;
         let reply: Option<ReplyEntity> = match ReplyMAC::find_reply(self.store.db(), &message).await? {
@@ -36,6 +37,8 @@ impl Replies for RepliesService {
             status: "ok".to_string(),
             reply,
         };
+
+        metrics::histogram!("request_duration", start.elapsed());
         Ok(Response::new(res))
     }
 }

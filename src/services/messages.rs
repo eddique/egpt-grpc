@@ -1,5 +1,6 @@
 use std::time::{SystemTime, Duration};
 use sqlx::types::time::OffsetDateTime;
+use tokio::time::Instant;
 use tonic::{Request, Response};
 use crate::err::GrpcResult;
 use crate::grpc::pb::{Void, GetMessagesResponse, MessageEntity};
@@ -24,8 +25,8 @@ impl MessageService {
 #[tonic::async_trait]
 impl Message for MessageService {
     async fn get_messages(&self, _: Request<Void>) -> GrpcResult<GetMessagesResponse> {
-        metrics::increment_counter!("requests");
-        metrics::increment_counter!("get_messages");
+        metrics::increment_counter!("requests", "service" => "message_service", "rpc" => "get_messages");
+        let start = Instant::now();
 
         let five_minutes = Duration::from_secs(5 * 60);
         let five_minutes_ago = SystemTime::now()
@@ -38,6 +39,8 @@ impl Message for MessageService {
             .map(|msg| msg.into())
             .collect::<Vec<MessageEntity>>();
         let res = GetMessagesResponse { messages };
+        
+        metrics::histogram!("request_duration", start.elapsed());
         Ok(Response::new(res))
     }
 }

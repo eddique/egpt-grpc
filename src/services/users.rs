@@ -1,3 +1,4 @@
+use tokio::time::Instant;
 use tonic::{Request, Response};
 use crate::err::GrpcResult;
 use crate::grpc::pb::{UserByEmailRequest, UserResponse, UserEntity};
@@ -22,8 +23,8 @@ impl UserService {
 #[tonic::async_trait]
 impl User for UserService {
     async fn email_lookup(&self, req: Request<UserByEmailRequest>) -> GrpcResult<UserResponse> {
-        metrics::increment_counter!("requests");
-        metrics::increment_counter!("email_lookup");
+        metrics::increment_counter!("requests", "service" => "user_service", "rpc" => "email_lookup");
+        let start = Instant::now();
 
         let email = req.into_inner().email;
         let user: Option<UserEntity> = match UserMAC::email_lookup(self.store.db(), &email).await? {
@@ -36,6 +37,7 @@ impl User for UserService {
             status: "ok".to_string(),
             user,
         };
+        metrics::histogram!("request_duration", start.elapsed());
         Ok(Response::new(res))
     }
 }
