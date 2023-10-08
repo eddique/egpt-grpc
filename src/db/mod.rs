@@ -33,8 +33,8 @@ impl Store {
 
 pub async fn new_db_pool(conn_str: &str) -> Result<Db> {
     PgPoolOptions::new()
-        .max_connections(1)
-        .acquire_timeout(Duration::from_millis(500))
+        .max_connections(4)
+        .acquire_timeout(Duration::from_millis(1500))
         .connect(conn_str)
         .await
         .map_err(Error::Sqlx)
