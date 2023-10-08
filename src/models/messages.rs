@@ -39,7 +39,7 @@ impl MessageMAC {
         let sql = r#"
             SELECT id, channel, text, post_at, created_at, updated_at
             FROM scheduled_messages
-            WHERE post_at NOT NULL AND post_at < $1
+            WHERE post_at < $1
         "#;
         let messages = sqlx::query_as::<_, Message>(sql)
             .bind(ts)

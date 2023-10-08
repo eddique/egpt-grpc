@@ -33,7 +33,7 @@ pub enum Error {
 impl From<Error> for Status {
     fn from(value: Error) -> Self {
         match value {
-            Error::Sqlx(_) => Status::aborted("sqlx error"),
+            Error::Sqlx(e) => Status::aborted(format!("sqlx error: {}", e.to_string())),
             Error::IO(_) => Status::aborted("io error"),
             _ => Status::aborted("internal error"),
         }
