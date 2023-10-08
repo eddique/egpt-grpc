@@ -22,6 +22,9 @@ impl UserService {
 #[tonic::async_trait]
 impl User for UserService {
     async fn email_lookup(&self, req: Request<UserByEmailRequest>) -> GrpcResult<UserResponse> {
+        metrics::increment_counter!("requests");
+        metrics::increment_counter!("email_lookup");
+
         let email = req.into_inner().email;
         let user: Option<UserEntity> = match UserMAC::email_lookup(self.store.db(), &email).await? {
             Some(user) => {

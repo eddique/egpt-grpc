@@ -24,6 +24,9 @@ impl MessageService {
 #[tonic::async_trait]
 impl Message for MessageService {
     async fn get_messages(&self, _: Request<Void>) -> GrpcResult<GetMessagesResponse> {
+        metrics::increment_counter!("requests");
+        metrics::increment_counter!("get_messages");
+
         let five_minutes = Duration::from_secs(5 * 60);
         let five_minutes_ago = SystemTime::now()
             .checked_sub(five_minutes)
