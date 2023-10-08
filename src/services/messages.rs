@@ -40,7 +40,7 @@ impl Message for MessageService {
             .collect::<Vec<MessageEntity>>();
         let res = GetMessagesResponse { messages };
         
-        metrics::histogram!("request_duration", start.elapsed());
+        metrics::histogram!("request_duration", start.elapsed().as_millis() as f64);
         Ok(Response::new(res))
     }
 }

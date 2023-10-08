@@ -38,7 +38,7 @@ impl Replies for RepliesService {
             reply,
         };
 
-        metrics::histogram!("request_duration", start.elapsed());
+        metrics::histogram!("request_duration", start.elapsed().as_millis() as f64);
         Ok(Response::new(res))
     }
 }

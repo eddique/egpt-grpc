@@ -37,7 +37,8 @@ impl User for UserService {
             status: "ok".to_string(),
             user,
         };
-        metrics::histogram!("request_duration", start.elapsed());
+        
+        metrics::histogram!("request_duration", start.elapsed().as_millis() as f64);
         Ok(Response::new(res))
     }
 }
